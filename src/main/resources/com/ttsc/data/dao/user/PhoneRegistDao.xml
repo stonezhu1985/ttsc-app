@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ttsc.data.dao.user.PhoneRegistDao">
+	
+	<insert id="savePhoneRegistInfo" parameterType="PhoneRegistInfo">
+		 insert into
+		 phone_regist_info(telephone,regist_code) 
+		 values(#{telephone},#{registCode})
+	</insert>
+    
+    <select id="findPhoneRegistDaoByPhoneAndRegistCode" parameterType="PhoneRegistInfo" resultType="PhoneRegistInfo">
+        select 
+        	id id,telephone telephone,
+        	create_time createTime,regist_time registTime,
+        	status status,regist_code registCode
+        from  
+        	phone_regist_info 
+        where 
+        	telephone = #{telephone}
+        and
+        	regist_code = #{registCode} 
+        and 
+        	status = #{status}
+        and type = 0
+        and 
+          <![CDATA[
+           (UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(CREATE_time))/60 <= 30
+         ]]>
+        order by
+        	create_time desc
+        limit 1;
+    </select>
+    
+     
+    <update id="updatePhoneRegistStatus" parameterType="PhoneRegistInfo">
+    	update 
+    		phone_regist_info 
+    	set 
+    		status = 1,
+    		regist_time = now()
+    	where 
+    		telephone = #{telephone}
+    	and
+    		status = 0
+    	and 
+    		regist_code = #{registCode} 
+    </update>
+    
+    <update id="updatePhoneRegistStatusToInvalid" parameterType="PhoneRegistInfo">
+    	update 
+    		phone_regist_info 
+    	set 
+    		status = 1
+    	where 
+    		telephone = #{telephone}
+    	and
+    		status = 0
+
+    </update>
+    
+</mapper>

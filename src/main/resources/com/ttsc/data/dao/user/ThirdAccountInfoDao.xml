@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ttsc.data.dao.user.ThirdAccountInfoDao">
+    
+     <select id="findThirdAccountInfo"  parameterType="int" resultType="ThirdAccountInfo">
+		select tai.id id,
+			   tai.account account,tai.consignee_person consigneePerson,
+			   tai.telephone telephone,tai.province province,tai.city city,
+			   tai.county county,tai.address address,tai.sex sex,tai.reputation_photo reputationPhoto,
+			   tai.real_name_photo realNamePhoto,tai.flowers_photo flowersPhoto,tai.reputation_level reputationLevel,
+			   tai.third_part_id thirdPartId,tai.third_level_info_id thirdLevelInfoId,tai.isExamine isExamine,check_message checkMessage
+		 from 
+			third_account_info tai 
+		LEFT JOIN
+			user_third_account_info_relation utair
+		on 
+			tai.id = utair.third_account_info_id
+		where 
+			utair.user_id=#{userId}
+	 </select>
+	 
+	 <insert id="saveThirdAccountInfo" parameterType="ThirdAccountInfo">
+	 	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 insert into
+		 third_account_info(account,consignee_person,telephone,province,city,county,address,third_part_id,third_level_info_id,reputation_photo,real_name_photo,flowers_photo) 
+		 values(#{account},#{consigneePerson},#{telephone},#{province},#{city},#{county},#{address},#{thirdPartId},#{thirdLevelInfoId},#{reputationPhoto},#{realNamePhoto},#{flowersPhoto})
+	</insert>
+
+	<delete id="deleteThirdAccountInfoById" parameterType="Integer">
+        delete from  
+        	third_account_info 
+        where 
+        	id = #{id}
+    </delete>
+    
+     <select id="findThirdAccountInfoById"  parameterType="int" resultType="ThirdAccountInfo">
+		select tai.id id,
+			   tai.account account,tai.consignee_person consigneePerson,
+			   tai.telephone telephone,tai.province province,tai.city city,
+			   tai.county county,tai.address address,tai.sex sex,tai.reputation_photo reputationPhoto,
+			   tai.real_name_photo realNamePhoto,tai.flowers_photo flowersPhoto,tai.reputation_level reputationLevel,
+			   tai.third_part_id thirdPartId,tai.third_level_info_id thirdLevelInfoId,tai.isExamine isExamine
+		 from 
+			third_account_info tai 
+		where 
+			id=#{id}
+	 </select>
+	 
+	  <select id="findThirdAccountInfoByAccount"  parameterType="ThirdAccountInfo" resultType="ThirdAccountInfo">
+		select tai.id id,
+			   tai.account account,tai.consignee_person consigneePerson,
+			   tai.telephone telephone,tai.province province,tai.city city,
+			   tai.county county,tai.address address,tai.sex sex,tai.reputation_photo reputationPhoto,
+			   tai.real_name_photo realNamePhoto,tai.flowers_photo flowersPhoto,tai.reputation_level reputationLevel,
+			   tai.third_part_id thirdPartId,tai.third_level_info_id thirdLevelInfoId,tai.isExamine isExamine,check_message checkMessage
+		 from 
+			third_account_info tai 
+		where 
+			account=#{account}
+		and 
+			isExamine != 2
+		and 
+			third_part_id = #{thirdPartId}
+	 </select>
+</mapper>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ttsc.data.dao.user.UserDao">
+	
+	<insert id="saveUser" parameterType="User">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 insert into
+		 user(telephone,password) 
+		 values(#{telephone},#{password})
+	</insert>
+    
+     <select id="findUserByPhone" parameterType="String" resultType="User">
+        select 
+        	id id,telephone telephone,
+        	name name,qq qq,sex sex,
+        	password password,realName realName,
+        	passPortPhoto passPortPhoto,heaPortrait heaPortrait,
+        	invitationCode invitationCode,handPassPortPhoto handPassPortPhoto,
+        	
+ passPostNum,create_time createTime,update_time updateTime,is_validate isValidate,passPortCreateTime passPortCreateTime
+        from  
+        	user 
+        where 
+        	telephone = #{telephone}
+        limit 1;
+    </select>
+    
+     <select id="findUserByPhoneAndPassWord" parameterType="User" resultType="User">
+        select 
+        	id id,telephone telephone,
+        	name name,qq qq,sex sex,
+        	password password,realName realName,
+        	passPortPhoto passPortPhoto,heaPortrait heaPortrait,
+        	invitationCode invitationCode,handPassPortPhoto handPassPortPhoto,
+        	passPostNum passPostNum,create_time createTime,update_time updateTime,is_validate isValidate,passPortCreateTime passPortCreateTime
+        from  
+        	user 
+        where 
+        	telephone = #{telephone}
+        and 
+        	password = #{password}
+        limit 1;
+    </select>
+    
+    <update id="updateUserPassWordByPhone" parameterType="User">
+    	update 
+    		user 
+    	set 
+    		password = #{password},
+    		update_time=now()
+    	where 
+    		telephone = #{telephone}
+    </update>
+    
+    <select id="findUserBUserId" parameterType="int" resultType="User">
+        select 
+        	id id,telephone telephone,
+        	name name,qq qq,sex sex,
+        	password password,realName realName,
+        	passPortPhoto passPortPhoto,heaPortrait heaPortrait,
+        	invitationCode invitationCode,handPassPortPhoto handPassPortPhoto,
+        	passPostNum passPostNum,create_time createTime,update_time updateTime,is_validate isValidate,passPortCreateTime passPortCreateTime
+        from  
+        	user 
+        where 
+        	id = #{id}
+        limit 1;
+    </select>
+    
+     <update id="updateUserPassportByUserId" parameterType="User">
+    	update 
+    		user 
+    	set 
+    		realName = #{realName},
+    		passPostNum=#{passPostNum},
+    		sex = #{sex},
+    		passPortPhoto = #{passPortPhoto},
+    		handPassPortPhoto = #{handPassPortPhoto},
+    		passPortCreateTime = now(),
+    		is_validate = #{isValidate}
+    	where 
+    		id = #{id}
+    </update>
+    
+    <update id="updateNameByUserId" parameterType="User">
+    	update 
+    		user 
+    	set 
+    		name = #{name}
+    	where 
+    		id = #{id}
+    </update>
+    
+     <update id="updateQqByUserId" parameterType="User">
+    	update 
+    		user 
+    	set 
+    		qq = #{qq}
+    	where 
+    		id = #{id}
+    </update>
+    
+      <update id="updateWeiXinByUserId" parameterType="User">
+    	update 
+    		user 
+    	set 
+    		weixin = #{weixin}
+    	where 
+    		id = #{id}
+    </update>
+    
+     <update id="updateHeaPortraitByUserId" parameterType="User">
+    	update 
+    		user 
+    	set 
+    		heaPortrait = #{heaPortrait}
+    	where 
+    		id = #{id}
+    </update>
+    
+</mapper>

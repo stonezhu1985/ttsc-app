@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ttsc.data.dao.user.UserBankInfoRelationDao">
+    
+     <select id="findUserBankInfoRelationByUserId"  parameterType="int" resultType="UserBankInfoRelation">
+        select 
+        	id id,bank_info_id bankInfoId,
+        	account account,name name,
+        	bank_city bankCity,bank_zhihang bankZhiHang,user_id userId,open_an_account openAnaccount
+        from  
+        	user_bank_info_relation
+        where  
+        	user_id =#{userId}
+    </select>
+
+	<insert id="saveUserBankInfoRelation" parameterType="UserBankInfoRelation">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		 insert into
+		 user_bank_info_relation(bank_info_id,account,name,bank_city,bank_zhihang,user_id,open_an_account) 
+		 values(#{bankInfoId},#{account},#{name},#{bankCity},#{bankZhiHang},#{userId},#{openAnaccount})
+	</insert>
+	
+	<delete id="deleteUserBankInfoRelationById" parameterType="Integer">
+        delete from  
+        	user_bank_info_relation 
+        where 
+        	id = #{id}
+    </delete>
+</mapper>
